@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>नव वर्ष इनवाइट जनरेटर</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Nirmala UI', Arial, sans-serif;
+        }
+        
+        :root {
+            --friend-color: #3498db;
+            --love-color: #e74c3c;
+            --family-color: #2ecc71;
+            --group-color: #9b59b6;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0c3c60 0%, #1a1a2e 100%);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 20px 0;
+        }
+        
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(to right, #ff9a00, #ff0058);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 10px;
+        }
+        
+        .tagline {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+        
+        .creator-credit {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px 20px;
+            border-radius: 50px;
+            display: inline-block;
+            font-size: 0.9rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .main-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+        
+        .form-container, .preview-container {
+            flex: 1;
+            min-width: 300px;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .form-container h2, .preview-container h2 {
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            color: #ffdd40;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .form-container h2 i, .preview-container h2 i {
+            color: #ff9a00;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #ff9a00;
+            box-shadow: 0 0 0 3px rgba(255, 154, 0, 0.2);
+        }
+        
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .relationship-types {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        
+        .relationship-type {
+            flex: 1;
+            min-width: 120px;
+            padding: 15px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid transparent;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .relationship-type:hover {
+            transform: translateY(-5px);
+        }
+        
+        .relationship-type.active {
+            border-color: currentColor;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .relationship-type i {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+        
+        .friend-type { color: var(--friend-color); }
+        .love-type { color: var(--love-color); }
+        .family-type { color: var(--family-color); }
+        .group-type { color: var(--group-color); }
+        
+        .shayari-display {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+            border-left: 5px solid #ff9a00;
+            font-style: italic;
+            line-height: 1.8;
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        
+        .generate-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(to right, #ff9a00, #ff0058);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+        
+        .generate-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(255, 154, 0, 0.3);
+        }
+        
+        /* Preview Styling */
+        .preview-card {
+            background: linear-gradient(135deg, #1a2a3a 0%, #2c3e50 100%);
+            border-radius: 20px;
+            padding: 30px;
+            min-height: 500px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .preview-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .preview-year {
+            font-size: 4rem;
+            font-weight: 900;
+            color: #ffdd40;
+            text-shadow: 0 0 20px rgba(255, 221, 64, 0.5);
+        }
+        
+        .preview-greeting {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin: 10px 0;
+        }
+        
+        .preview-message {
+            font-size: 1.5rem;
+            opacity: 0.9;
+        }
+        
+        .preview-body {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px 0;
+        }
+        
+        .preview-shayari {
+            font-size: 1.4rem;
+            line-height: 1.8;
+            font-style: italic;
+            margin: 20px 0;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            border-left: 5px solid;
+        }
+        
+        .preview-from-to {
+            font-size: 1.3rem;
+            margin-top: 20px;
+        }
+        
+        .preview-from {
+            color: #ffdd40;
+            font-weight: 700;
+        }
+        
+        .preview-to {
+            color: #4dccbd;
+            font-weight: 700;
+        }
+        
+        .preview-footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .share-btn, .download-btn {
+            flex: 1;
+            padding: 15px;
+            border-radius: 10px;
+            border: none;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .share-btn {
+            background: linear-gradient(to right, #00b4db, #0083b0);
+            color: white;
+        }
+        
+        .download-btn {
+            background: linear-gradient(to right, #2ecc71, #27ae60);
+            color: white;
+        }
+        
+        .share-btn:hover, .download-btn:hover {
+            transform: translateY(-3px);
+        }
+        
+        .creator-signature {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            font-size: 0.8rem;
+            opacity: 0.7;
+            text-align: right;
+            max-width: 200px;
+        }
+        
+        .firework {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .preview-year {
+                font-size: 3rem;
+            }
+            
+            .preview-greeting {
+                font-size: 2rem;
+            }
+            
+            .relationship-types {
+                flex-direction: column;
+            }
+        }
+        
+        /* Confetti container */
+        #confetti-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+    </style>
+</head>
+<body>
+    <div id="confetti-container"></div>
+    
+    <div class="container">
+        <header>
+            <h1 class="logo">🎉 नव वर्ष इनवाइट जनरेटर</h1>
+            <p class="tagline">अपना पर्सनलाइज्ड न्यू ईयर ग्रीटिंग बनाएं और शेयर करें</p>
+            <div class="creator-credit">
+                <i class="fas fa-code"></i> Design & Concept by Deepak Kumar | deepak10320p4kr@gmail.com | +91 9229671151
+            </div>
+        </header>
+        
+        <div class="main-content">
+            <div class="form-container">
+                <h2><i class="fas fa-edit"></i> अपनी ग्रीटिंग बनाएं</h2>
+                
+                <div class="form-group">
+                    <label for="yourName"><i class="fas fa-user"></i> आपका नाम</label>
+                    <input type="text" id="yourName" placeholder="अपना नाम डालें" value="दीपक कुमार">
+                </div>
+                
+                <div class="form-group">
+                    <label for="recipientName"><i class="fas fa-user-friends"></i> प्राप्तकर्ता का नाम</label>
+                    <input type="text" id="recipientName" placeholder="जिसे भेजना है उसका नाम" value="मेरे प्यारे दोस्त">
+                </div>
+                
+                <div class="form-group">
+                    <label><i class="fas fa-heart"></i> संबंध प्रकार चुनें</label>
+                    <div class="relationship-types">
+                        <div class="relationship-type friend-type" data-type="friend">
+                            <i class="fas fa-user-friends"></i>
+                            <div>दोस्त</div>
+                        </div>
+                        <div class="relationship-type love-type" data-type="love">
+                            <i class="fas fa-heart"></i>
+                            <div>प्यार</div>
+                        </div>
+                        <div class="relationship-type family-type" data-type="family">
+                            <i class="fas fa-home"></i>
+                            <div>परिवार</div>
+                        </div>
+                        <div class="relationship-type group-type" data-type="group">
+                            <i class="fas fa-users"></i>
+                            <div>ग्रुप</div>
+                        </div>
+                    </div>
+                    <input type="hidden" id="relationshipType" value="friend">
+                </div>
+                
+                <div class="form-group">
+                    <label for="customMessage"><i class="fas fa-comment-alt"></i> अपना संदेश (वैकल्पिक)</label>
+                    <textarea id="customMessage" placeholder="अपना पर्सनल संदेश यहाँ लिखें..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label><i class="fas fa-quote-right"></i> शायरी (ऑटो-सिलेक्ट)</label>
+                    <div class="shayari-display" id="shayariDisplay">
+                        नए साल की रौनक हो, खुशियों की बौछार हो,<br>
+                        दोस्ती हमारी यूँ ही बनी रहे, यही है दुआ हमारी।
+                    </div>
+                </div>
+                
+                <button class="generate-btn" id="generateBtn">
+                    <i class="fas fa-magic"></i> ग्रीटिंग जनरेट करें
+                </button>
+            </div>
+            
+            <div class="preview-container">
+                <h2><i class="fas fa-eye"></i> ग्रीटिंग प्रिव्यू</h2>
+                
+                <div class="preview-card" id="previewCard">
+                    <div class="preview-header">
+                        <div class="preview-year" id="previewYear">2026</div>
+                        <div class="preview-greeting" id="previewGreeting">नव वर्ष की हार्दिक शुभकामनाएं!</div>
+                        <div class="preview-message" id="previewMessage">आपके लिए एक विशेष संदेश</div>
+                    </div>
+                    
+                    <div class="preview-body">
+                        <div class="preview-shayari" id="previewShayari">
+                            नए साल की रौनक हो, खुशियों की बौछार हो,<br>
+                            दोस्ती हमारी यूँ ही बनी रहे, यही है दुआ हमारी।
+                        </div>
+                        
+                        <div class="preview-from-to" id="previewFromTo">
+                            <span class="preview-from" id="previewFrom">दीपक कुमार</span> की तरफ से 
+                            <span class="preview-to" id="previewTo">मेरे प्यारे दोस्त</span> को
+                        </div>
+                    </div>
+                    
+                    <div class="preview-footer">
+                        <p>इस ग्रीटिंग को बनाया गया है नव वर्ष इनवाइट जनरेटर के द्वारा</p>
+                        
+                        <div class="action-buttons">
+                            <button class="share-btn" id="shareBtn">
+                                <i class="fas fa-share-alt"></i> शेयर करें
+                            </button>
+                            <button class="download-btn" id="downloadBtn">
+                                <i class="fas fa-download"></i> डाउनलोड करें
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="creator-signature">
+                        Design & Concept by Deepak Kumar<br>
+                        deepak1032004kr@gmail.com<br>
+                        +91 9229671151
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer style="text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); width: 100%;">
+            <p>© 2026 नव वर्ष इनवाइट जनरेटर | Design & Concept by Deepak Kumar</p>
+            <p style="font-size: 0.9rem; opacity: 0.8; margin-top: 10px;">
+                यह टूल फ्री में उपलब्ध है। इसे शेयर करें और दूसरों को भी नव वर्ष की शुभकामनाएं भेजने में मदद करें।
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        // शायरी डेटाबेस - प्रकार के अनुसार
+        const shayariDatabase = {
+            friend: [
+                "नए साल की रौनक हो, खुशियों की बौछार हो, दोस्ती हमारी यूँ ही बनी रहे, यही है दुआ हमारी।",
+                "दोस्ती का रिश्ता है अनमोल, नए साल में और भी हो खिलखिलाता, मुस्कुराता यह बोल।",
+                "नया साल लेकर आए खुशियाँ अपार, दोस्त तुम्हारे साथ बिताएं यह साल प्यारा प्यार।",
+                "दोस्ती की यह डोर कभी ना टूटे, नए साल में और भी मजबूत हो, यही दुआ है मेरी।",
+                "पुरानी यादों को समेट कर, नए सपनों के साथ, मुबारक हो तुम्हें यह नया साल, मेरे दोस्त।"
+            ],
+            love: [
+                "तुम्हारे बिना अधूरा है हर पल, नए साल में तुम्हें पाऊं मैं हर ख्वाब में संग संग चल।",
+                "प्यार की इस बहार में खिलते रहें हम दोनों, नया साल लाए हमारे लिए खुशियों की सौगात।",
+                "तुम्हारी यादों में बिताऊंगा नया साल भी, तुम्हारे प्यार में डूबा रहूंगा हर पल भी।",
+                "नया साल नया इरादा, तुम्हें पाना है फिर से अपनाना, तुम्हारे बिना जीना है अधूरा सा सजाना।",
+                "तुम हो तो है मेरी दुनिया में उजाला, नए साल में भी बना रहे यह प्यारा सा नाता।"
+            ],
+            family: [
+                "परिवार की यह मिठास बनी रहे हमेशा, नए साल में आए घर में खुशियों की बहार।",
+                "माँ की दुआओं का आशीर्वाद, पिता के हाथों का सहारा, नया साल लाए सबके लिए नया उजियारा।",
+                "घर की दहलीज पर सजे फूलों की महक, परिवार के साथ बीते यह साल बहुत ही रंगीन।",
+                "दादी-नानी की कहानियाँ, बच्चों की किलकारियाँ, नए साल में भी गूंजे घर में यही मधुर सुरियाँ।",
+                "परिवार है तो है सब कुछ, नए साल में और भी बढ़े प्यार, यही है दुआ हमारी।"
+            ],
+            group: [
+                "साथियों का साथ हो, मस्ती की बौछार हो, नए साल में भी हम सब यूँ ही जुड़े रहें।",
+                "ग्रुप में गप्पें, मजाक, मस्ती, नए साल में भी बनी रहे यह भाईचारे की पहचान।",
+                "एक दूजे के सहारे, एक दूजे के अपने, नए साल में भी बना रहे यह अनमोल रिश्ता।",
+                "जब भी मिलें खिलखिलाहट, जब भी बातें यादें बन जाएं, नया साल लाए और भी मीठे पल।",
+                "दोस्ती का यह ग्रुप बना रहे हमेशा, नए साल में भी बनी रहे यह मस्ती, यह उमंग।"
+            ]
+        };
+        
+        // ग्रीटिंग संदेश डेटाबेस
+        const greetingDatabase = {
+            friend: "दोस्त, तुम्हारे लिए नए साल की ढेर सारी शुभकामनाएं!",
+            love: "प्यार, तुम्हारे साथ हर साल खास है। नया साल मुबारक!",
+            family: "परिवार के प्रियजनों के लिए नए साल की हार्दिक शुभकामनाएं!",
+            group: "ग्रुप के सभी सदस्यों को नए साल की ढेर सारी बधाई!"
+        };
+        
+        // DOM Elements
+        const relationshipTypes = document.querySelectorAll('.relationship-type');
+        const relationshipTypeInput = document.getElementById('relationshipType');
+        const shayariDisplay = document.getElementById('shayariDisplay');
+        const generateBtn = document.getElementById('generateBtn');
+        const previewCard = document.getElementById('previewCard');
+        const previewYear = document.getElementById('previewYear');
+        const previewGreeting = document.getElementById('previewGreeting');
+        const previewMessage = document.getElementById('previewMessage');
+        const previewShayari = document.getElementById('previewShayari');
+        const previewFrom = document.getElementById('previewFrom');
+        const previewTo = document.getElementById('previewTo');
+        const previewFromTo = document.getElementById('previewFromTo');
+        const shareBtn = document.getElementById('shareBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const yourNameInput = document.getElementById('yourName');
+        const recipientNameInput = document.getElementById('recipientName');
+        const customMessageInput = document.getElementById('customMessage');
+        
+        // वर्तमान वर्ष
+        const currentYear = new Date().getFullYear();
+        const newYear = currentYear + 1;
+        previewYear.textContent = newYear;
+        
+        // Relationship Type चुनना
+        let selectedType = 'friend';
+        
+        relationshipTypes.forEach(type => {
+            type.addEventListener('click', function() {
+                // सभी से active क्लास हटाएं
+                relationshipTypes.forEach(t => t.classList.remove('active'));
+                
+                // चुने हुए को active करें
+                this.classList.add('active');
+                
+                // टाइप सेव करें
+                selectedType = this.getAttribute('data-type');
+                relationshipTypeInput.value = selectedType;
+                
+                // प्रीव्यू कार्ड का बॉर्डर कलर बदलें
+                updatePreviewCardColor(selectedType);
+                
+                // शायरी अपडेट करें
+                updateShayari(selectedType);
+                
+                // ग्रीटिंग मैसेज अपडेट करें
+                updateGreetingMessage(selectedType);
+            });
+        });
+        
+        // पहला टाइप डिफ़ॉल्ट रूप से चुनें
+        document.querySelector('.relationship-type[data-type="friend"]').classList.add('active');
+        
+        // प्रीव्यू कार्ड का कलर अपडेट करें
+        function updatePreviewCardColor(type) {
+            // पहले सभी कलर क्लासेस हटाएं
+            previewCard.classList.remove('friend-border', 'love-border', 'family-border', 'group-border');
+            
+            // शायरी के बॉर्डर का कलर
+            previewShayari.style.borderLeftColor = getColorByType(type);
+        }
+        
+        // टाइप के आधार पर कलर दें
+        function getColorByType(type) {
+            switch(type) {
+                case 'friend': return '#3498db';
+                case 'love': return '#e74c3c';
+                case 'family': return '#2ecc71';
+                case 'group': return '#9b59b6';
+                default: return '#ff9a00';
+            }
+        }
+        
+        // शायरी अपडेट करें
+        function updateShayari(type) {
+            const shayaris = shayariDatabase[type];
+            const randomIndex = Math.floor(Math.random() * shayaris.length);
+            const selectedShayari = shayaris[randomIndex];
+            
+            shayariDisplay.innerHTML = selectedShayari.replace(/\n/g, '<br>');
+            previewShayari.innerHTML = selectedShayari.replace(/\n/g, '<br>');
+        }
+        
+        // ग्रीटिंग मैसेज अपडेट करें
+        function updateGreetingMessage(type) {
+            previewMessage.textContent = greetingDatabase[type];
+        }
+        
+        // ग्रीटिंग जनरेट करें
+        generateBtn.addEventListener('click', function() {
+            // यूजर का नाम
+            const yourName = yourNameInput.value.trim() || "आपका मित्र";
+            previewFrom.textContent = yourName;
+            
+            // प्राप्तकर्ता का नाम
+            const recipientName = recipientNameInput.value.trim() || "प्रिय मित्र";
+            previewTo.textContent = recipientName;
+            
+            // कस्टम मैसेज (अगर है)
+            const customMessage = customMessageInput.value.trim();
+            if (customMessage) {
+                previewShayari.innerHTML = customMessage.replace(/\n/g, '<br>');
+            }
+            
+            // फ्रॉम-टो टेक्स्ट अपडेट करें
+            previewFromTo.innerHTML = `<span class="preview-from">${yourName}</span> की तरफ से <span class="preview-to">${recipientName}</span> को`;
+            
+            // कन्फेटी इफेक्ट
+            createConfettiEffect();
+            
+            // सक्सेस मैसेज
+            alert("आपकी ग्रीटिंग तैयार है! अब आप इसे शेयर या डाउनलोड कर सकते हैं।");
+        });
+        
+        // शेयर बटन
+        shareBtn.addEventListener('click', function() {
+            const yourName = yourNameInput.value.trim() || "आपका मित्र";
+            const recipientName = recipientNameInput.value.trim() || "प्रिय मित्र";
+            
+            const shareText = `${yourName} ने आपको नव वर्ष ${newYear} की शुभकामनाएं भेजी हैं! देखने के लिए लिंक खोलें: ${window.location.href}`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: `नव वर्ष ${newYear} की शुभकामनाएं`,
+                    text: shareText,
+                    url: window.location.href,
+                })
+                .then(() => console.log('शेयर सफल'))
+                .catch((error) => console.log('शेयर एरर:', error));
+            } else {
+                // फॉलबैक
+                navigator.clipboard.writeText(shareText).then(() => {
+                    alert("ग्रीटिंग लिंक कॉपी हो गया है! आप इसे कहीं भी शेयर कर सकते हैं।\n\nDesign & Concept by Deepak Kumar");
+                });
+            }
+        });
+        
+        // डाउनलोड बटन
+        downloadBtn.addEventListener('click', function() {
+            // कन्फेटी इफेक्ट
+            createConfettiEffect();
+            
+            // एलर्ट मैसेज
+            alert("ग्रीटिंग सेव हो गई है! आप इसे अपने डिवाइस में सेव कर सकते हैं।\n\nDesign & Concept by Deepak Kumar");
+            
+            // वास्तविक डाउनलोड के लिए html2canvas का इस्तेमाल किया जा सकता है
+            // लेकिन यहाँ सिम्पल एलर्ट दिखा रहे हैं
+        });
+        
+        // कन्फेटी इफेक्ट बनाएं
+        function createConfettiEffect() {
+            const container = document.getElementById('confetti-container');
+            const colors = ['#ff9a00', '#ff0058', '#00b4db', '#2ecc71', '#9b59b6', '#ffdd40'];
+            
+            // पुराने कन्फेटी हटाएं
+            container.innerHTML = '';
+            
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'firework';
+                confetti.style.left = `${Math.random() * 100}%`;
+                confetti.style.top = `${Math.random() * 100}%`;
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.width = `${Math.random() * 10 + 5}px`;
+                confetti.style.height = confetti.style.width;
+                confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                container.appendChild(confetti);
+                
+                // एनीमेशन
+                animateConfetti(confetti);
+            }
+        }
+        
+        // कन्फेटी एनिमेट करें
+        function animateConfetti(confetti) {
+            let opacity = 1;
+            let y = parseFloat(confetti.style.top);
+            let x = parseFloat(confetti.style.left);
+            const xSpeed = (Math.random() - 0.5) * 2;
+            const ySpeed = Math.random() * 3 + 2;
+            const rotation = Math.random() * 360;
+            const rotationSpeed = (Math.random() - 0.5) * 10;
+            
+            confetti.style.transform = `rotate(${rotation}deg)`;
+            
+            function animate() {
+                y -= ySpeed;
+                x += xSpeed;
+                opacity -= 0.01;
+                
+                confetti.style.top = `${y}%`;
+                confetti.style.left = `${x}%`;
+                confetti.style.opacity = opacity;
+                
+                // रोटेशन अपडेट
+                const currentRotation = parseFloat(confetti.style.transform.replace('rotate(', '').replace('deg)', '')) || 0;
+                confetti.style.transform = `rotate(${currentRotation + rotationSpeed}deg)`;
+                
+                if (opacity > 0 && y > -10) {
+                    requestAnimationFrame(animate);
+                } else {
+                    confetti.remove();
+                }
+            }
+            
+            animate();
+        }
+        
+        // पेज लोड होने पर कन्फेटी शो
+        window.addEventListener('load', function() {
+            setTimeout(createConfettiEffect, 500);
+        });
+        
+        // रैंडम शायरी बटन (ऑप्शनल)
+        const randomShayariBtn = document.createElement('button');
+        randomShayariBtn.innerHTML = '<i class="fas fa-random"></i> रैंडम शायरी';
+        randomShayariBtn.style.cssText = `
+            margin-top: 10px;
+            padding: 10px 15px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        `;
+        
+        randomShayariBtn.addEventListener('click', function() {
+            updateShayari(selectedType);
+            createConfettiEffect();
+        });
+        
+        document.querySelector('.form-group:last-child').appendChild(randomShayariBtn);
+        
+        // इनिशियल शायरी लोड करें
+        updateShayari('friend');
+        updateGreetingMessage('friend');
+        updatePreviewCardColor('friend');
+    </script>
+</body>
+</html>
